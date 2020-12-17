@@ -41,6 +41,6 @@ gulp.task('images', () => {
       imagemin.optipng(),
       imagemin.gifsicle()
     ]))
-    .pipe(gulp.dest(distDir))  // 保存
+    .pipe(gulp.dest(paths.image_compression.dist))  // 保存
     .pipe(notify('&#x1f363; images task finished &#x1f363;'));
 });

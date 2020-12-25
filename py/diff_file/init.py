@@ -7,25 +7,26 @@ import shutil
 # ----------------------------------------
 
 args = sys.argv
-diff_file_path = ''
+diff_file_path = './diff.txt'
+file_path = ''
 output_path = ''
 
 i = 1
 
 for arg in args :
   if i == 2 :
-    diff_file_path = arg
+    file_path = arg
   elif i == 3 :
     output_path = arg
   i += 1
 
 
 # 引数が足りてなければ処理を中断する
-if input_folder == '' :
-  print('Diff file is not entered')
+if file_path == '' :
+  print('File path folder is not entered')
   sys.exit(1)
-elif output_folder == '' :
-  print('Output folder is not entered')
+elif output_path == '' :
+  print('Output path is not entered')
   sys.exit(1)
 
 
@@ -53,8 +54,20 @@ diff_list = diff_file.split('\n')
 # 既存ディレクトリの削除
 # ----------------------------------------
 
-if os.path.exists(output_folder) :
-  shutil.rmtree(output_folder)
+if os.path.exists(output_path) :
+  shutil.rmtree(output_path)
+
+os.mkdir(output_path)
+
+# ----------------------------------------
+# ファイルコピペの準備 ディレクトリの記述を揃える
+# ----------------------------------------
+
+if output_path[-1] != '/' :
+  output_path = output_path + '/'
+
+if file_path[-1] != '/' :
+  file_path = file_path + '/'
 
 # ----------------------------------------
 # ファイルを探してコピーする
@@ -63,12 +76,12 @@ if os.path.exists(output_folder) :
 for target in diff_list :
   directory = target.split('/')
   file_name = directory.pop()
-  directory = output_folder + '/'.join(directory)
+  directory = output_path + '/'.join(directory)
 
   if os.path.exists(directory) :
-    if os.path.isfile(target) :
-      shutil.copyfile(target, directory + '/' + file_name)
+    if os.path.isfile(file_path + target) :
+      shutil.copyfile(file_path + target, directory + '/' + file_name)
   else :
-    if os.path.isfile(target) :
+    if os.path.isfile(file_path + target) :
       os.makedirs(directory)
-      shutil.copyfile(target, directory + '/' + file_name)
+      shutil.copyfile(file_path + target, directory + '/' + file_name)

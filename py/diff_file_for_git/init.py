@@ -2,6 +2,7 @@ import os
 import sys
 import shutil
 import git
+import glob
 
 # ----------------------------------------
 # 引数を受け取る
@@ -22,11 +23,11 @@ for arg in args :
 
 
 # 引数が足りてなければ処理を中断する
-if input_folder == '' :
+if git_path == '' :
   print('Git folder is not entered')
   sys.exit(1)
-elif output_folder == '' :
-  print('Output folder is not entered')
+elif output_path == '' :
+  print('Output path is not entered')
   sys.exit(1)
 
 # ----------------------------------------
@@ -37,7 +38,6 @@ repo =  git.Repo(git_path)
 t = repo.head.commit.tree
 diff = repo.git.diff('HEAD~1..HEAD', name_only=True) 
 diff_list = diff.split('\n')
-print(diff_list)
 
 # ----------------------------------------
 # 既存ディレクトリの削除
@@ -45,6 +45,18 @@ print(diff_list)
 
 if os.path.exists(output_path) :
   shutil.rmtree(output_path)
+
+os.mkdir(output_path)
+
+# ----------------------------------------
+# ファイルコピペの準備 ディレクトリの記述を揃える
+# ----------------------------------------
+
+if output_path[-1] != '/' :
+  output_path = output_path + '/'
+
+if git_path[-1] != '/' :
+  git_path = git_path + '/'
 
 # ----------------------------------------
 # ファイルを探してコピーする
@@ -56,9 +68,9 @@ for target in diff_list :
   directory = output_path + '/'.join(directory)
 
   if os.path.exists(directory) :
-    if os.path.isfile(target) :
-      shutil.copyfile(target, directory + '/' + file_name)
+    if os.path.isfile(git_path + target) :
+      shutil.copyfile(git_path + target, directory + '/' + file_name)
   else :
-    if os.path.isfile(target) :
+    if os.path.isfile(git_path + target) :
       os.makedirs(directory)
-      shutil.copyfile(target, directory + '/' + file_name)
+      shutil.copyfile(git_path + target, directory + '/' + file_name)

@@ -3,10 +3,31 @@ import sys
 import shutil
 
 # ----------------------------------------
-# 定義
+# 引数を受け取る
 # ----------------------------------------
 
-diff_file_path = './diff.txt'
+args = sys.argv
+diff_file_path = ''
+output_path = ''
+
+i = 1
+
+for arg in args :
+  if i == 2 :
+    diff_file_path = arg
+  elif i == 3 :
+    output_path = arg
+  i += 1
+
+
+# 引数が足りてなければ処理を中断する
+if input_folder == '' :
+  print('Diff file is not entered')
+  sys.exit(1)
+elif output_folder == '' :
+  print('Output folder is not entered')
+  sys.exit(1)
+
 
 # ----------------------------------------
 # diffファイルの存在を確認
@@ -32,8 +53,8 @@ diff_list = diff_file.split('\n')
 # 既存ディレクトリの削除
 # ----------------------------------------
 
-if os.path.exists('./dist/') :
-  shutil.rmtree('./dist/')
+if os.path.exists(output_folder) :
+  shutil.rmtree(output_folder)
 
 # ----------------------------------------
 # ファイルを探してコピーする
@@ -42,7 +63,7 @@ if os.path.exists('./dist/') :
 for target in diff_list :
   directory = target.split('/')
   file_name = directory.pop()
-  directory = './dist/' + '/'.join(directory)
+  directory = output_folder + '/'.join(directory)
 
   if os.path.exists(directory) :
     if os.path.isfile(target) :

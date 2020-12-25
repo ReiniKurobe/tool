@@ -4,9 +4,9 @@
 
 1. [Python 3系をインストール](https://www.python.org/downloads/)
 2. `$ pip install gitpython`を実行し、インストール
-3. 使用したいサイトにinit.pyをコピーする (.gitがあるフォルダ)
 
 ## 使用方法
 
-1. init.pyがあるディレクトリにて`$ python init.py`を実行
-2. dist/に差分ファイルが作成される
+1. init.pyがあるディレクトリにて`$ python init.py {/path/to/} {/output_folder/path/}`を実行
+  - 第一引数にGitディレクトリ(.gitがあるフォルダ）を指定。第二引数に出力したいフォルダを指定。
+2. 指定したアプトプットフォルダに差分ファイルが作成される
